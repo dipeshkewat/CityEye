@@ -1,4 +1,4 @@
-﻿"""
+"""
 CityEye YOLOv8 AI Detection and Ingestion Pipeline.
 Implements Video Ingestion, CLAHE Low-Light/Contrast Pre-Processing,
 YOLOv8 Object Detection, Multi-Frame Confirmation, Severity Calculation,
@@ -12,14 +12,19 @@ import argparse
 from datetime import datetime, timezone
 import cv2
 import numpy as np
-from ultralytics import YOLO
+try:
+    from ultralytics import YOLO
+except ImportError:
+    YOLO = None
 
 # Add paths for project imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
 ml_dir = os.path.abspath(os.path.join(current_dir, ".."))
-backend_dir = os.path.abspath(os.path.join(current_dir, "..", "..", "backend"))
+backend_dir1 = os.path.abspath(os.path.join(current_dir, "..", "backend"))
+backend_dir2 = os.path.abspath(os.path.join(current_dir, "..", "..", "backend"))
 sys.path.append(ml_dir)
-sys.path.append(backend_dir)
+sys.path.append(backend_dir1)
+sys.path.append(backend_dir2)
 
 from pipeline.verifier import MultiFrameVerifier
 from pipeline.severity import calculate_severity
@@ -145,12 +150,12 @@ def run_simulation(camera_id: str = "cam-001", problem_type: str = "pothole", en
             db.refresh(new_report)
             db.close()
 
-            print(f"\n  [✔] INCIDENT CONFIRMED AT FRAME #{frame_idx}!")
+            print(f"\n  [CONFIRMED] INCIDENT CONFIRMED AT FRAME #{frame_idx}!")
             print(f"      Report ID:     {report_id}")
             print(f"      Type:          {cand.problem_type}")
             print(f"      Severity:      {sev_label.upper()} (Score: {sev_score})")
             print(f"      Pre-process:   CLAHE Luminance Equalization (LAB)")
-            print(f"      Database:      COMMITTED TO POSTGRESQL\n")
+            print(f"      Database:      COMMITTED TO DATABASE\n")
             confirmed_reports.append(report_id)
 
     print(f"[*] Simulation completed. Generated {len(confirmed_reports)} verified incident(s).")
