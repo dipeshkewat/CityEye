@@ -1,12 +1,8 @@
-﻿# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -34,19 +30,26 @@ ENV/
 env.bak/
 venv.bak/
 
-# Training runs & checkpoint logs (weights in models/best.pt is tracked)
+# Logs & runs
 runs/
 *.log
 
-# Raw datasets (keep repo lightweight under GitHub limits)
-datasets/
-*.zip
-*.tar.gz
+# Databases
+*.db
+*.sqlite
+*.sqlite3
 
-# Media outputs & test videos
+# Node
+node_modules/
+dist/
+
+# Uploads & datasets
+datasets/
 uploads/
 *.mp4
 *.avi
+*.zip
+*.tar.gz
 
 # IDE & OS
 .vscode/
